@@ -10,7 +10,7 @@ export default function FilmCard(props) {
                 <h1 className="card-title">{props.title}</h1>
                 <div className="card-byline">
                     <h2 className="card-year">{props.year}</h2>
-                    <h3 className="card-runtime">{props.runtime}m</h3>
+                    <h3 className="card-runtime">{props.runtime + "m"}</h3>
                 </div>
                 {props.show_desc ?
                     <p onClick={() => props.toggle_desc(props.id)} className="card-description">{props.description}</p>

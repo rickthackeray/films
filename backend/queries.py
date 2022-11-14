@@ -29,8 +29,9 @@ def date():
 def add_film(title,description,year,runtime,img_url,tmdb_id):
     run_query(f"""
         INSERT INTO films
-        VALUES (NULL,'{title}','{description}','{year}','{runtime}','{img_url}','{tmdb_id}')
+        VALUES (NULL,'{title}','{description}','{year}','{runtime}','{img_url}','{tmdb_id}', NULL)
     """)
+    return run_query("SELECT * FROM films ORDER BY film_id DESC LIMIT 1")
 
 def get_allfilms():
     return run_query("SELECT * FROM films")

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 import requests
+import json
 
 import queries
 
@@ -19,6 +20,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+with open('apikey.txt') as f:
+    api_key = f.readline().strip()
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
@@ -41,7 +45,7 @@ def add_film(
 
 @app.post("/films/add/id")
 def add_film_by_id(id: int):
-    response = requests.get(f"""https://api.themoviedb.org/3/movie/{id}?api_key=304a64452db36f43df22a6f20c4cfa5b""")
+    response = requests.get(f"""https://api.themoviedb.org/3/movie/{id}?api_key={api_key}""")
     title = response.json()["title"].replace("'", "").replace('"', '')
     desc = response.json()["overview"].replace("'", "").replace('"', '')
     runtime = response.json()["runtime"]
@@ -53,3 +57,22 @@ def add_film_by_id(id: int):
 @app.delete("/films/remove")
 def delete_film(id: int):
     return queries.delete_film(id)
+
+@app.get("/films/search")
+def search_film(query: str):
+    films = []
+    response = requests.get(f"""https://api.themoviedb.org/3/search/movie?api_key={api_key}&language=en-US&query={query}&page=1&include_adult=false""")
+    results = response.json()['results']
+    for film in results:
+        year = film.get('release_date')
+        if year:
+            year = year[0:4]
+        else:
+            year = 'n/a'
+
+        films.append({
+            'title': film.get('title'),
+            'year': year,
+            'tmdb_id': film.get('id')
+        })
+    return films

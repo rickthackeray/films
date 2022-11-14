@@ -13,30 +13,6 @@ h1,h2,h3,h4,h5,h6 {
   margin: 20px;
 }
 
-.addfilmbox-frame {
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  position: fixed;
-  background-color: rgba(0,0,0,0.6);
-}
-
-.addfilmbox-inner {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 60%;
-    max-width: 500px;
-    min-width: 300px;
-    transform: translateX(-50%) translateY(-50%);
-    background-color: #CCC;
-    border-radius: 8px;
-
-    display: grid;
-    padding: 10px;
-}
-
 .addfilmbox-btn {
     position: fixed;
     width: 60px;
@@ -48,38 +24,82 @@ h1,h2,h3,h4,h5,h6 {
     font-size: 40px;
     color: #FFF;
     background-color: #666;
-    text-align: center;
     text-decoration: none;
-  }
-  
-  .plus {
-    margin-top: 4px;
-  }
-
-  input, select {
-    padding: 4px;
-    margin: 10px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 8px;
   }
 
-  select {
-    width: 90px;
-  }
+.addfilmbox {
+  width: min(92vw,600px);
+  max-height: min(92vh,630px);
+  bottom: min(20vh,120px);
+  right: min(4vw,120px);
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: #CCC;
+  border-radius: 8px;
+}
 
-  h5 {
-    margin: 22px 0px 2px 0px;
-    padding: 4px;
-  }
+.addfilmbox.active {
+  opacity: 1;
+  visibility: visible;
+}
 
-  .addfilmbox-submit {
-    border: none;
-    background-color: #666;
-    color: #FFF;
-    font-size: 1.2rem;
-    width: 90px;
-    margin: 10px 10px 10px auto;
-    padding: 4px;
-    border-radius: 6px;
-  }
+.addfilmbox.inactive {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.addfilmbox-inner {
+    position: relative;
+    padding: 10px 10px 0 10px;
+    width: 100%;
+}
+
+input, select {
+  padding: 4px;
+  margin: 10px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 4px;
+  width: calc(100% - 20px);
+}
+
+.addfilmbox-submit {
+  border: none;
+  background-color: #666;
+  color: #FFF;
+  font-size: 1.2rem;
+  width: 90px;
+  margin: 10px 10px 10px auto;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.addfilmbox-results {
+  position: relative;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 0;
+  padding: 0;
+}
+
+li {
+  /* font-size: 1.1rem; */
+  margin: 4px 20px;
+  padding: 2px 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #BBB;
+  width: fit-content;
+  border-radius: 4px;
+  box-shadow: 2px 2px #666;
+}
