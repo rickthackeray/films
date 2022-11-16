@@ -1,11 +1,13 @@
 import React from "react"
 
 import "./FilmCard.css"
+import starEmpty from './star-empty.png'
+import starFilled from './star-filled.png'
 
 export default function FilmCard(props) {
     return (
         <div className="card-container">
-            <img src={props.img_url} className="card-img" alt={props.title} />
+            <img src={props.img_url} className="card-img" alt={props.title + " poster"} />
             <div className="card-body">
                 <h1 className="card-title">{props.title}</h1>
                 <div className="card-byline">
@@ -18,12 +20,24 @@ export default function FilmCard(props) {
                     <div/>
                 }
                 <div className="card-footer">
-                    <div className="card-note">star rating?</div>
+                    <div className="card-rating">
+                    {[...Array(5)].map((e,i) => (
+                        <img
+                            src={(props.rating < i+1 ? starEmpty : starFilled)}
+                            alt={(props.rating < i+1 ? "star-empty" : "star-filled")}
+                            className="card-star"
+                            key={i}
+                            id={i+1}
+                            onClick={event => props.set_rating(event,props.id)}
+                        />
+                    ))}
+                    </div>
                     <div onClick={() => props.toggle_desc(props.id)} className="card-description-toggle">{props.show_desc ? "▲" : "▼"}</div>
                     <button onClick={props.delete}>
                         <img 
                             src="https://cdn-icons-png.flaticon.com/512/3031/3031307.png"
                             className="card-footer-delete"
+                            alt="delete"
                         />
                     </button>
                 </div>
@@ -31,5 +45,3 @@ export default function FilmCard(props) {
         </div>
     )
 }
-
-// ▲

@@ -38,4 +38,6 @@ def get_allfilms():
 
 def delete_film(id):
     run_query(f"""DELETE FROM films WHERE film_id={id}""")
-    
+
+def set_rating(id, rating):
+    run_query(f"""UPDATE films SET rating = {rating} WHERE film_id = {id}""")

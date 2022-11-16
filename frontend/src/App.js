@@ -9,12 +9,14 @@ function App() {
     const [addFilmQuery, setAddFilmQuery] = useState("")
     const [addFilmResults, setAddFilmResults] = useState()
 
-    let filmboxRef = useRef()
+    const addFilmboxRef = useRef()
+    const addFilmboxInputRef = useRef()
+
 
     useEffect(() => {
         loadFilms()
         let clickHandler = (event) => {
-            if (!filmboxRef.current.contains(event.target)) {
+            if (!addFilmboxRef.current.contains(event.target)) {
                 setShowAddFilmBox(false)
             }
         }
@@ -40,6 +42,15 @@ function App() {
         setFilms(prevFilms => {
             return prevFilms.map(film => {
                 return film.film_id === id ? {...film, show_desc: !film.show_desc} : film
+            })
+        })
+    }
+
+    function setRating(event, id) {
+        fetch('http://localhost:8000/films/setrating?id=' + id + '&rating=' + event.target.id, {method: 'PUT'})
+        setFilms(prev => {
+            return prev.map(film => {
+                return film.film_id === id ? {...film, rating: event.target.id} : film
             })
         })
     }
@@ -75,6 +86,8 @@ function App() {
             id={film.film_id}
             img_url={film.img_url}
             title={film.title}
+            rating={film.rating}
+            set_rating={setRating}
             description={film.desc}
             show_desc={film.show_desc}
             toggle_desc={toggleDescription}
@@ -87,13 +100,17 @@ function App() {
     return (
         <main className="main-container">
             <div className="films">{filmCards}</div>
-            <div className="addfilmbox-container" ref={filmboxRef}>
-                <button className="addfilmbox-btn" onClick={() => {setShowAddFilmBox(!showAddFilmBox)}}>+</button>
+            <div className="addfilmbox-container" ref={addFilmboxRef}>
+                <button className="addfilmbox-btn" onClick={() => {
+                    setShowAddFilmBox(!showAddFilmBox)
+                    addFilmboxInputRef.current.focus()
+                }}>+</button>
                 <div className={`addfilmbox ${showAddFilmBox? 'active' : 'inactive'}`}>
                     <form className="addfilmbox-inner" onSubmit={handleAddFilmQuerySubmit}>
                         <h4>Add a Film</h4>
                         <input
                             type="text"
+                            ref={addFilmboxInputRef}
                             placeholder="Search for a title..."
                             onChange={(e) => setAddFilmQuery(e.target.value)}
                             value={addFilmQuery}
@@ -101,7 +118,12 @@ function App() {
                     </form>
                     {addFilmResults && <ul className="addfilmbox-results">
                         {addFilmResults.map(result => (
-                            <li onClick={handleAddFilmResultClick} key={result.tmdb_id} id={result.tmdb_id}>({result.year}) {result.title}</li>
+                            <li
+                                onClick={handleAddFilmResultClick}
+                                key={result.tmdb_id}
+                                id={result.tmdb_id}
+                            >({result.year}) {result.title}
+                            </li>
                         ))}
                     </ul>}
                 </div>

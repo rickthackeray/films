@@ -38,14 +38,25 @@
 }
 
 .card-year {
-  font-size: 1.2rem;
-  padding: 0 6px;
+  font-size: 1rem;
 }
 
 .card-runtime {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-left: auto;
   padding: 0 6px;
+}
+
+.card-rating {
+  display: flex;
+  flex-direction: row;
+  justify-self: left;
+}
+
+.card-star {
+  padding: 0 2px;
+  height: 20px;
+  cursor: pointer;
 }
 
 .card-description {
@@ -59,10 +70,8 @@
   cursor: pointer;
 }
 
-button {
-  border-style: none;
-  background-color: transparent;
-  cursor: pointer;
+.card-footer>button {
+  justify-self: right;
 }
 
 .card-footer {

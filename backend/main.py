@@ -53,6 +53,9 @@ def add_film_by_id(id: int):
     year = response.json()["release_date"][0:4]
     return queries.add_film(title, desc, year, runtime, img_url, id)
 
+@app.put("/films/setrating")
+def set_rating(id: int, rating: int):
+    return queries.set_rating(id, rating)
 
 @app.delete("/films/remove")
 def delete_film(id: int):
