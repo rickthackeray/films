@@ -12,6 +12,7 @@ function App() {
     const addFilmboxRef = useRef()
     const addFilmboxInputRef = useRef()
 
+    const host = 'http://127.0.0.1:8000'
 
     useEffect(() => {
         loadFilms()
@@ -28,7 +29,7 @@ function App() {
     },[])
 
     function loadFilms() {
-        fetch('http://127.0.0.1:8000/films')
+        fetch(host + '/films')
         .then(response => response.json())
         .then(data => {
             data = data.map(prev => {
@@ -47,7 +48,7 @@ function App() {
     }
 
     function setRating(event, id) {
-        fetch('http://localhost:8000/films/setrating?id=' + id + '&rating=' + event.target.id, {method: 'PUT'})
+        fetch(host + '/films/setrating?id=' + id + '&rating=' + event.target.id, {method: 'PUT'})
         setFilms(prev => {
             return prev.map(film => {
                 return film.film_id === id ? {...film, rating: event.target.id} : film
@@ -56,20 +57,20 @@ function App() {
     }
 
     function deleteFilm(id) {
-        fetch('http://127.0.0.1:8000/films/remove?id=' + id, {method: 'DELETE'})
+        fetch(host + '/films/remove?id=' + id, {method: 'DELETE'})
         setFilms(prevFilms => prevFilms.filter(film => film.film_id !== id))
     }
 
     function handleAddFilmQuerySubmit(event) {
         event.preventDefault()
         const encodedQuery = encodeURI(addFilmQuery)
-        fetch('http://127.0.0.1:8000/films/search?query=' + encodedQuery)
+        fetch(host + '/films/search?query=' + encodedQuery)
         .then(response => response.json())
         .then(data => setAddFilmResults(data))
     }
 
     function handleAddFilmResultClick(event) {
-        fetch('http://127.0.0.1:8000/films/add/id?id=' + event.target.id, {method: 'POST'})
+        fetch(host + '/films/add/id?id=' + event.target.id, {method: 'POST'})
         .then(response => response.json())
         .then(data => {
             setFilms(prevFilms => [...prevFilms, ...data])
